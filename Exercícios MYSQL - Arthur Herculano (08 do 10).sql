@@ -1,5 +1,4 @@
 CREATE DATABASE empresa_exercicios;
-
 USE empresa_exercicios;
 
 
@@ -312,3 +311,245 @@ on d.id_departamento = p.id_departamento
 where f.idade between 25 and 30
 or f.salario > 6000
 or p.valor > 50000;
+
+-- 21. Liste o nome dos funcionários, salário e cidade,
+-- mostrando somente aqueles que trabalham em São Paulo
+-- e possuem salário superior a R$ 4.000,00.
+-- Utilize WHERE e AND.
+
+select f.nome, f.salario, f.cidade
+from funcionarios f
+where f.cidade = "São Paulo" and
+f.salario > 4000;
+
+
+-- 22. Liste o nome dos funcionários e o departamento
+-- ao qual pertencem, mostrando somente funcionários
+-- que trabalham nos departamentos 1, 2, 3 ou 4.
+-- Utilize INNER JOIN e IN.
+
+select f.nome as Funcionário, d.nome as Departamento
+from funcionarios f
+inner join departamentos d
+on f.id_departamento = d.id_departamento
+where d.id_departamento IN(1, 2, 3, 4);
+
+-- 23. Liste o nome dos funcionários, idade e departamento,
+-- mostrando somente aqueles que possuem idade entre
+-- 30 e 40 anos e pertencem ao departamento 2 ou 5.
+-- Utilize BETWEEN, IN e INNER JOIN.
+
+select f.nome as Funcionário, f.idade, d.nome as Departamento
+from funcionarios f
+inner join departamentos d
+on f.id_departamento = d.id_departamento
+where f.idade between 30 and 40
+and d.id_departamento in(2, 5);
+
+-- 24. Liste o nome dos funcionários, salário e departamento,
+-- mostrando somente aqueles que possuem salário entre
+-- R$ 4.000,00 e R$ 7.000,00 e trabalham no departamento
+-- de Tecnologia da Informação.
+-- Utilize BETWEEN e AND.
+
+select f.nome as Funcionário, f.salario, d.nome as Departamento
+from funcionarios f
+inner join departamentos d
+on f.id_departamento = d.id_departamento
+where f.salario between 4000 and 7000
+and d.nome = "Tecnologia da Informação";
+
+-- 25. Liste o nome dos funcionários e suas respectivas
+-- cidades, mostrando aqueles que trabalham em
+-- São Paulo, Campinas ou Santos.
+-- Utilize IN.
+
+select f.nome, f.cidade
+from funcionarios f
+where f.cidade IN("São Paulo", "Campinas", "Santos");
+
+-- 26. Liste o nome do funcionário, departamento e projeto,
+-- mostrando somente funcionários que possuem salário
+-- superior a R$ 5.000,00 ou trabalham no departamento 3.
+-- Utilize INNER JOIN e OR.
+
+select f.nome as Funcionário, 
+f.salario, 
+d.nome as Departamento, 
+p.nome as Projeto
+from funcionarios f
+	inner join departamentos d
+	on f.id_departamento = d.id_departamento
+	inner join projetos p
+    on f.id_departamento = p.id_departamento
+where f.salario > 5000 and
+d.id_departamento = 3;
+
+-- 27. Liste o nome do projeto, valor e departamento,
+-- mostrando somente projetos cujo valor esteja entre
+-- R$ 30.000,00 e R$ 70.000,00.
+-- Utilize BETWEEN.
+
+select
+p.nome as Projeto, 
+p.valor, 
+d.nome as Departamento
+from projetos p
+	inner join departamentos d
+    on p.id_departamento = d.id_departamento
+where p.valor between 30000 and 70000;
+
+
+-- 28. Liste o nome do funcionário, departamento e projeto,
+-- mostrando somente projetos que estejam com status
+-- 'Em andamento' ou 'Planejamento' e cujo valor
+-- seja superior a R$ 30.000,00.
+-- Utilize OR e AND.
+
+select f.nome as Funcionário, 
+p.valor, 
+d.nome as Departamento, 
+p.nome as Projeto,
+p.status as Situação
+from funcionarios f
+	inner join departamentos d
+	on f.id_departamento = d.id_departamento
+	inner join projetos p
+    on f.id_departamento = p.id_departamento
+where p.status in("Em andamento", "Planejamento") and
+p.valor > 30000;
+
+
+-- 29. Liste o nome dos funcionários, salário, departamento
+-- e projeto, mostrando somente funcionários que possuem
+-- salário entre R$ 4.000,00 e R$ 6.500,00 e que estejam
+-- vinculados a projetos com valor superior a R$ 30.000,00.
+
+select 
+f.nome as Funcionário, 
+f.salario, 
+d.nome as Departamento, 
+p.nome as Projeto,
+p.valor
+from funcionarios f
+	inner join departamentos d
+	on f.id_departamento = d.id_departamento
+	inner join projetos p
+    on f.id_departamento = p.id_departamento
+where f.salario between 4000 and 6500 and
+p.valor > 30000
+order by f.nome;
+
+-- 30. Liste o nome do funcionário, cidade, departamento
+-- e projeto, mostrando somente funcionários que trabalham
+-- em São Paulo ou Campinas e pertencem aos
+-- departamentos 1, 2 ou 3.
+-- Utilize OR, IN e INNER JOIN.
+
+SELECT
+    f.nome,
+    f.cidade,
+    d.nome AS departamento,
+    p.nome AS projeto
+FROM funcionarios f
+INNER JOIN departamentos d
+    ON f.id_departamento = d.id_departamento
+INNER JOIN projetos p
+    ON d.id_departamento = p.id_departamento
+WHERE
+    (f.cidade = 'São Paulo'
+    OR f.cidade = 'Campinas')
+    AND d.id_departamento IN (1, 2, 3);
+
+
+-- 31. Liste o nome do funcionário, idade, salário
+-- e departamento, mostrando somente funcionários que
+-- tenham idade entre 25 e 35 anos e salário superior
+-- a R$ 4.000,00, ou funcionários com salário
+-- superior a R$ 7.000,00.
+-- Utilize BETWEEN, AND e OR.
+
+SELECT
+    f.nome,
+    f.idade,
+    f.salario,
+    d.nome AS departamento
+FROM funcionarios f
+INNER JOIN departamentos d
+    ON f.id_departamento = d.id_departamento
+WHERE
+    (f.idade BETWEEN 25 AND 35
+    AND f.salario > 4000)
+    OR f.salario > 7000;
+
+
+-- 32. Liste o nome do funcionário, departamento, projeto
+-- e valor do projeto, mostrando somente projetos
+-- pertencentes aos departamentos 2, 4 ou 6 e com
+-- valor entre R$ 20.000,00 e R$ 60.000,00.
+-- Utilize IN e BETWEEN.
+
+SELECT
+    f.nome,
+    d.nome AS departamento,
+    p.nome AS projeto,
+    p.valor AS valor_projeto
+FROM funcionarios f
+INNER JOIN departamentos d
+    ON f.id_departamento = d.id_departamento
+INNER JOIN projetos p
+    ON d.id_departamento = p.id_departamento
+WHERE
+    d.id_departamento IN (2, 4, 6)
+    AND p.valor BETWEEN 20000 AND 60000;
+
+
+-- 33. Liste o nome do funcionário, salário, departamento,
+-- projeto e status do projeto, mostrando somente
+-- funcionários que possuem salário entre R$ 3.500,00
+-- e R$ 6.000,00 e projetos com status
+-- 'Em andamento' ou 'Planejamento'.
+
+SELECT
+    f.nome,
+    f.salario,
+    d.nome AS departamento,
+    p.nome AS projeto,
+    p.status AS status_projeto
+FROM funcionarios f
+INNER JOIN departamentos d
+    ON f.id_departamento = d.id_departamento
+INNER JOIN projetos p
+    ON d.id_departamento = p.id_departamento
+WHERE
+    f.salario BETWEEN 3500 AND 6000
+    AND p.status IN (
+        'Em andamento',
+        'Planejamento'
+    );
+
+
+-- 34. Liste o nome do funcionário, idade, salário,
+-- departamento, projeto e valor do projeto.
+-- Mostre somente funcionários que atendam
+-- a uma das condições:
+-- Idade entre 30 e 40 anos;
+-- Salário entre R$ 5.000,00 e R$ 7.000,00;
+-- Projeto com valor superior a R$ 60.000,00.
+
+SELECT
+    f.nome,
+    f.idade,
+    f.salario,
+    d.nome AS departamento,
+    p.nome AS projeto,
+    p.valor AS valor_projeto
+FROM funcionarios f
+INNER JOIN departamentos d
+    ON f.id_departamento = d.id_departamento
+INNER JOIN projetos p
+    ON d.id_departamento = p.id_departamento
+WHERE
+    f.idade BETWEEN 30 AND 40
+    OR f.salario BETWEEN 5000 AND 7000
+    OR p.valor > 60000;
